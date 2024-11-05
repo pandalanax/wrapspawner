@@ -36,7 +36,7 @@ if os.path.exists('requirements.txt'):
         
 setup_args = dict(
     name                = 'wrapspawner',
-    packages            = ['wrapspawner'],
+    #packages            = ['wrapspawner'],
     version             = version_ns['__version__'],
     description         = """Wrapspawner: A spawner for Jupyterhub to wrap other spawners and allow the user to choose among them.""",
     long_description    = "",
