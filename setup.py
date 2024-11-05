@@ -14,7 +14,7 @@ import os
 import sys
 
 #from distutils.core import setup
-from setuptools import setup
+from setuptools import setup, find_packages
 
 pjoin = os.path.join
 here = os.path.abspath(os.path.dirname(__file__))
@@ -24,6 +24,16 @@ version_ns = {}
 with open(pjoin(here, 'version.py')) as f:
     exec(f.read(), {}, version_ns)
 
+# Read the requirements from the requirements.txt file
+install_requires = []
+if os.path.exists('requirements.txt'):
+    with open('requirements.txt') as f:
+        install_requires = [
+            line.strip()
+            for line in f.readlines()
+            if line.strip() and not line.startswith(('#', '-e'))
+        ]
+        
 setup_args = dict(
     name                = 'wrapspawner',
     packages            = ['wrapspawner'],
@@ -44,18 +54,10 @@ setup_args = dict(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
     ],
+    packages=find_packages(),  # Automatically finds all packages under the current directory
+    install_requires=install_requires,  # List of dependencies
+    include_package_data=True,  # Include files as specified in MANIFEST.in
 )
-
-# setuptools requirements
-if 'setuptools' in sys.modules:
-    setup_args['install_requires'] = install_requires = []
-    with open('requirements.txt') as f:
-        for line in f.readlines():
-            req = line.strip()
-            if not req or req.startswith(('-e', '#')):
-                continue
-            install_requires.append(req)
-
 
 def main():
     setup(**setup_args)
